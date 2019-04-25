@@ -47,4 +47,32 @@ p {
   background-color: #cccccc;
 }
 
+.multipleChoice {
+  width: 75%;
+  height: 30px;
+  display: inline-block;
+  vertical-align: top;
+  background-color: #FFB581;
+  border: 5px solid darkslateblue;
+  margin: 2%;
+  padding: 20px;
+  position: relative;
+}
+
+.pickedRight {
+  color: #FFB581;
+  background-color: green;
+}
+
+.pickedWrong {
+  color: #FFB581;
+  background-color: red;
+}
+
+.result {
+  margin: 5px 20px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
 /* END OF FILE */

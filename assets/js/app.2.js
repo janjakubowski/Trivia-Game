@@ -1,36 +1,48 @@
 // app.js -- Stargate SG-1 Trivia Game -- Jan Jakubowski
-var round = -1;
+var round = 0;
 var tempQ = " ";
 var tempA = [ ];
-var alreadyPicked;  // boolean: lockout picking on multiple answers
-var timedOut;       // boolean: lockout picking answer after timer expired
+// var answer = { txt : " ", correct : false};
 var randomOrder = [0, 1, 2, 3];
+// var currentQ = " ";
 const triviaBank = {
+    round : 1,
     questions : [ 
         {   question : "What is 2 plus 2?",
             correct : "4",
             incorrect : ["3","5","0"]
         },
-        {   question: "Click On Pick Me",
+        {   question: "WTF?",
             correct : "Pick Me",
-            incorrect : ["Not This One", "Could Be", "Wrong"]
+            incorrect : ["X", "Y", "Z"]
         }
     ]
+     }
+
+function triviaCard(Q,A,index) {
+    this.Q = Q,
+    this.A = A,
+    this.correctIndex = index
+    // this.displayQ = {
+    //     var disdiv = $("#askQ");
+    //     $("#askQ").html(`<p>${this.Q}<p>`);
+    // }
 }
 
 shuffle = function (arrayIn) {
     randomize();
     var arrayOut = [];
     for (var x=0; x < arrayIn.length; x++ ) { 
+        // var random =  randomOrder[x];
+        // console.log("random element:" + random + " | arrayIn:" + arrayIn[random]);
         arrayOut[x] = arrayIn[randomOrder[x]];
     }
+    // console.log(arrayOut);
     return arrayOut;
 }
 
-function triviaCard(Q,A,index) {
-    this.Q = Q,
-    this.A = A,
-    this.correctIndex = index
+var currentGame = {
+    round : 0
 }
 
 function randomize() {
@@ -40,20 +52,15 @@ function randomize() {
         x = Math.floor(Math.random()*tempOrder.length);
         randomOrder[i] = tempOrder.splice(x,1);
     };
-    console.log ("randomOrder: " + randomOrder);
+    // console.log("RandomOrder: " + randomOrder);
 }
 
-function clearAll () {
-    $("#intro").empty();
-    $("#timeLeft").empty();
-    $("#askQ").empty();
-    $("#pickA").empty();
-    $("#final").empty();
-    alreadyPicked = false;
-    timedOut = false;
-}
+function clearAll () {$("#intro").empty();}
 
 function makeCard () {
+    // console.log("in makecard")
+    // round++;
+    
     var tempQ = triviaBank.questions[round].question;
     var tempA = [triviaBank.questions[round].correct];
     var tempA = tempA.concat(triviaBank.questions[round].incorrect);
@@ -64,14 +71,23 @@ function makeCard () {
         }
     }
     return new triviaCard(tempQ,tempA,tempIndex);
+    
 }
 
+// function displayCard() {
+//     $("#askQ").html(`<p>${this.Q}<p>`);
+    
+// }
+// }
 var seconds;
 var timeRemaining;
+// var secs;
 function countdown (seconds,silent) {
     if (!silent) {
         $("#timeLeft").html("<p>Time Remaining " + seconds + " seconds</p>");
     }
+    // console.log (seconds);
+    // if ((seconds = 10) && (!silent)) { $("#timeLeft").addClass("redTxt");}
     if (seconds < 1) {
         clearTimeout(timeRemaining);
         if (!silent) {
@@ -84,78 +100,46 @@ function countdown (seconds,silent) {
     
 }
 
-function nextRound () {
-    clearAll();
-    round++;
-    console.log("ready for round: " + round);
-    if (round < triviaBank.questions.length) {
-        playTrivia();
-    } else {
-        console.log("played all the questions");
-    }
-}
-
 function playTrivia () {
     var currentQnA = makeCard();
-    console.log(currentQnA.Q + " | " + currentQnA.A + " | " + currentQnA.correctIndex);
+    // console.log(currentQnA.Q + " | " + currentQnA.A + " | " + currentQnA.correctIndex);
     console.log(currentQnA.Q);
+    // currentQnA.displayQ;
     $("#askQ").html(`<p>${currentQnA.Q}<p>`);
-    var correctAns = currentQnA.A[currentQnA.correctIndex];
-    console.log("correct answer is " + correctAns);
     for (var ii=0; ii<currentQnA.A.length; ii++) {
-        var answerTile = $("<div>");
-        answerTile.addClass("multipleChoice");
-        answerTile.text(currentQnA.A[ii]);
-        answerTile.attr("data-answer", currentQnA.A[ii]);
-        answerTile.attr("data-rightanswer", correctAns);
-        $("#pickA").append(answerTile);
-    }   
-    // round++;
+        var amIRight = (ii == currentQnA.correctIndex) ? true : false;
+        if (amIRight) {console.log("correct answer is " + currentQnA.A[ii])};
+
+        
+        // var correctA = 
+        $("#pickA").append(`<p>${currentQnA.A[ii]},${amIRight}<p>`);
+        }   
+    round++;
 }
 // setTimeout('countdown(10,false)', 1000 * 5);
 
 var welcomePara = $("<p>").text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.");
 var startGameBtn = $("<button>");
-// startGameBtn.attr("onclick","playTrivia");
 startGameBtn.addClass("startGame");
 startGameBtn.text("Start Game");
-
 
 $("#intro").append(welcomePara);
 $("#intro").append(startGameBtn);
 
 // $("#intro").empty();
-$(document).on("click", ".startGame", function () { 
-    clearAll();   
-    nextRound();
-});
+playTrivia();
+
 // countdown(5,false);
 // setTimeout('clearAll', 1000 * 5);
 // setTimeout('playTrivia', 1000 * 10);
 
 
 // $(document).ready(function() {
-    $(document).on("click", ".multipleChoice", function () {
-        if ( !alreadyPicked && !timedOut ) {
-            alreadyPicked = true;
-            $(this).addClass("picked");
-            console.log("answer clicked: " + $(this).attr("data-answer"));
-            var correctAnswer = $(this).attr("data-rightanswer");
-            $("#askQ").append(`<h2 class="result">The correct answer is ${correctAnswer}</h2>`);       
-            if ($(this).attr("data-answer") == $(this).attr("data-rightanswer")) {
-                var rightOrWrong = `<h2 class="result">Yes, you're right!</h2>`
-                $(this).addClass("pickedRight");
-            } else {
-                var rightOrWrong = `<h2 class="result">Sorry, you're wrong!</h2>`;
-                $(this).addClass("pickedWrong");
-            }
-            $("#askQ").append(rightOrWrong);
-            setTimeout(nextRound, 7500);
-        }
+    // $(document).on("click", "button.startGame", function () {
     // $(startGameBtn).on("click", function() {    
         // setTimeout(clearAll, 1000 * 5);
         // clearAll;
         // playTrivia;
-    });
+    // });
 // })
 // END OF FILE 
