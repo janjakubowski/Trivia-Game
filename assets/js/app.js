@@ -61,8 +61,9 @@ startGameBtn.text("Start Game");
 
 $("#intro").append(welcomePara);
 $("#intro").append(startGameBtn);
-setTimeout(clearAll, 1000 * 2);
-setTimeout(makeCard, 1000 * 4);
+setTimeout(clearAll, 1000 * 1);
+console.log("starts in 5")
+setTimeout('countdown(10,false)', 1000 * 5);
 
 // $(startGameBtn).on("click", function() {    
 //     // setTimeout(clearAll, 1000 * 5);
@@ -84,6 +85,23 @@ function makeCard () {
         console.log(currentQnA.Q + " | " + currentQnA.A + " | " + currentQnA.correctIndex);
     }
 }
-
-
+var seconds;
+// var secs;
+function countdown (seconds,silent) {
+    if (!silent) {
+        $("#timeLeft").html("<p>Time Remaining " + seconds + " seconds</p>");
+    }
+    console.log (seconds);
+    // if ((seconds = 10) && (!silent)) { $("#timeLeft").addClass("redTxt");}
+    if (seconds < 1) {
+        clearTimeout(timeRemaining);
+        if (!silent) {
+            $("#timeLeft").append("<p>TIME IS UP</p>");
+        }
+        return true;
+    } 
+     seconds--;
+     var timeRemaining = setTimeout(`countdown(${seconds},${silent})`, 1000);
+    
+}
 // END OF FILE 
