@@ -47,16 +47,37 @@ p {
   background-color: #cccccc;
 }
 
+#askQ {
+  text-transform: uppercase;
+  font-size: 50px;
+  font-weight: bold;
+  width: 80%;
+  /* height: 30px; */
+  display: inline-block;
+  vertical-align: top;
+  /* background-color: #FFB581; */
+  /* border: 5px solid darkslateblue; */
+  margin: 5px 10%;
+  padding: 20px;
+  position: relative;
+}
+
 .multipleChoice {
+  text-transform: uppercase;
+  font-size: 30px; 
   width: 75%;
   height: 30px;
   display: inline-block;
   vertical-align: top;
   background-color: #FFB581;
   border: 5px solid darkslateblue;
-  margin: 2%;
+  margin: 5px 10%;
   padding: 20px;
   position: relative;
+}
+
+.multipleChoice:hover {
+  border: 5px solid red;
 }
 
 .pickedRight {
