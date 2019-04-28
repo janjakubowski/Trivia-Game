@@ -75,25 +75,16 @@ const triviaBank = {
     ]
 }
 
-// var triviaCard = {
-    
-//         Qtext : "",
-//         QcorrectAnswer : "", 
-    
-    
-//         Atext : "",
-//         Acorrect : null
-//     }]
+// function randomIndex (index) {
+//     // return a random number between 0 and index
+//     return Math.floor(Math.random()*index);
 // }
-
-function randomIndex (index) {
-    // return a random number between 0 and index
-    return Math.floor(Math.random()*index);
-}
 
 function clearAll () {
     // Clear all the div on the page
-    $("#intro, #timeLeft, #askQ, #pickA, #final").empty();
+    // $
+    $("#intro, #timeLeft, #QandAs, #final").empty();
+    $(".item-container").empty;
     // $("#timeLeft").empty();
     // $("#askQ").empty();
     // $("#pickA").empty();
@@ -113,7 +104,7 @@ function makeCard () {
     for (var j=0; j < triviaBank.questions[round].incorrect.length; j++) {
         currentA[j] = ({Atext : triviaBank.questions[round].incorrect[j], Acorrect : "N"});
     }
-    var randomI = randomIndex(triviaBank.questions[round].incorrect.length+1);
+    var randomI = Math.floor(Math.random()*triviaBank.questions[round].incorrect.length+1);
     console.log("randomI: " + randomI);
     currentA.splice(randomI,0,{Atext : triviaBank.questions[round].correct, Acorrect : "Y"});
 }
@@ -126,10 +117,13 @@ function countdown (seconds) {
         numNotAnswered++;
         clearTimeout(timeRemaining);
         timedOut = true;
-        $("#timeLeft").append("<p>TIME IS UP</p>");
+        QtextArea = $("#Qtile");
         var correctA = currentQ.QcorrectAnswer;
-        $("#askQ").append(`<h2 class="result">The correct answer is ${correctA}</h2>`);
-        setTimeout(nextRound, 5000);
+        QtextArea.prepend(`<p class="result">The correct answer is ${correctA}</p>`);
+        QtextArea.prepend("<p>TIME IS UP</p>");
+        // var correctA = currentQ.QcorrectAnswer;
+        
+        setTimeout(nextRound, 3000);
         return true;
     } 
      seconds--;
@@ -164,31 +158,52 @@ function nextRound () {
 function playTrivia () {
     makeCard();
     console.log("question: " + currentQ.Qtext + " | " + currentQ.QcorrectAnswer);
-    $("#askQ").html(`<p>${currentQ.Qtext}<p>`);
-    $("#askQ").attr("data-correctA",currentQ.correctAns);
+    // var currentView = $("#intro");
+    QnAtextArea = $("#QandAs");
+    QnAtextArea.addClass("item-container");
+    var questionTile = $("<div class=item id=Qtile>");
+    questionTile.html(`<p>${currentQ.Qtext}<p>`);
+    questionTile.attr("data-correctA",currentQ.correctAns);
+    // questionTile.addClass("item");
+    QnAtextArea.prepend(questionTile);
     for (var ii=0; ii<currentA.length; ii++) {
-        var answerTile = $("<div>");
+        var answerTile = $("<div class=item>");
         answerTile.addClass("multipleChoice");
         answerTile.text(currentA[ii].Atext);
         answerTile.attr("data-right", currentA[ii].Acorrect);
-        $("#pickA").append(answerTile);
+        QnAtextArea.append(answerTile);
     } 
-    countdown (10,false);  
+    countdown (15,false);  
 }
 // setTimeout('countdown(10,false)', 1000 * 5);
 
-var welcomePara = $("<p>").text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.");
+var currentView = $("#intro");
+
+var welcomeImage = $("<div>");
+// var welcomeImage = $("<img>");
+welcomeImage.html("<img width=600 src=assets/images/intro.jpeg></img>");
+// temp = "assets/images/intro.jpeg";
+// welcomeImage.attr("src",temp);
+welcomeImage.addClass("item-image");
+var welcomePara = $("<p>").text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.");
+welcomePara.addClass("item");
+// currentView.append(welcomePara);
 var startGameBtn = $("<button>");
 // startGameBtn.attr("onclick","playTrivia");
 startGameBtn.addClass("startGame");
 startGameBtn.text("Start Game");
+currentView.addClass("item-container");
+currentView.append(welcomeImage);
+currentView.append(welcomePara);
+currentView.append(startGameBtn);
+
+// setTimeout(startGame, 1000 * 5);
 
 
-$("#intro").append(welcomePara);
-$("#intro").append(startGameBtn);
 
 // $("#intro").empty();
 $(document).on("click", ".startGame", function () { 
+// function startGame () {
     clearAll();   
     nextRound();
 });
@@ -202,10 +217,11 @@ $(document).on("click", ".startGame", function () {
         if ( !alreadyPicked && !timedOut ) {
             alreadyPicked = true;
             clearTimeout(timeRemaining);
-            $("#timeLeft").empty();
+            // $("#timeLeft").empty();
             // $(this).addClass("picked");
+            QtextArea = $("#Qtile");
             var correctA = currentQ.QcorrectAnswer;
-            $("#askQ").append(`<h2 class="result">The correct answer is ${correctA}</h2>`);       
+            QtextArea.prepend(`<h2 class="result">The correct answer is ${correctA}</h2>`);       
             if ($(this).attr("data-right") === "Y") {
                 var rightOrWrong = `<h2 class="result">Yes, you're right!</h2>`
                 $(this).addClass("pickedRight");
@@ -215,8 +231,8 @@ $(document).on("click", ".startGame", function () {
                 $(this).addClass("pickedWrong");
                 numWrong++;
             }
-            $("#askQ").append(rightOrWrong);
-            setTimeout(nextRound, 5000);
+            QtextArea.prepend(rightOrWrong);
+            setTimeout(nextRound, 3000);
         }
     // $(startGameBtn).on("click", function() {    
         // setTimeout(clearAll, 1000 * 5);
