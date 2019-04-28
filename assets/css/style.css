@@ -1,12 +1,14 @@
 /* style.css : genereic start stylesheet */
 /* Jan Jakubowski - 15.apr.19            */
 * {
-  font-family: Georgia, Times, "Times New Roman", serif;
-  font-size: 16px;
+  /* font-family: Georgia, Times, "Times New Roman", serif; */
+  font-family: 'Merriweather Sans', sans-serif;
+  font-size: 20px;
 }
 
 h1, h2, h3, h4 {
-  font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+  /* font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif; */
+  font-family: 'Merriweather Sans', sans-serif;
 }
 
 h1 {
@@ -17,46 +19,57 @@ body {
   /* background-image: url("../images/topography.svg"), */
     /* linear-gradient(110deg, #457FFF, #B0FFCB); */
   /* background-size: 340px, auto; */
-  background-color:#333;
+  background-color:#000;
   background-image: url("../images/bg-a.jpeg");
   background-size: 100%;
   background-repeat: no-repeat;
   /* min-height: calc(100vh - 100px); */
-  background-color:#333;
-  margin: 25px;
+  /* background-color:#333; */
+  margin: 0;
   /* background: white; */
-  background-attachment: fixed;
+  /* background-attachment: fixed; */
   letter-spacing: -1px;
 }
 
 body, html {
-  margin: 50px;
+  margin: 0;
   padding: 0;
 }
 
 body {
-  background-color: #333;
+  /* background-color: #333; */
   color: #eee;
+  
   /* background: url(../images/wallpaper-backup.jpeg); */
   /* background-repeat: no-repeat; */
   /* background-size: cover; */
 }
 
+/* container {
+  max-width: 1200px;
+  margin: 8px auto 8px auto;
+} */
+
+
 h1 {
   width: 80%;
   font-size: 60px;
-  font-weight: bold;
-  margin: 10px 20px;
-  color: #ccc;
+  /* font-weight: bold; */
+  margin: 30px auto;
+  color: #eee;
 }
 
 p {
+  font-family: 'Merriweather Sans', sans-serif;
   font-size: 30px;
-  margin: 10px 20px
+  line-height: 37px;
+  margin: 5px px;
+  padding: 2px  5px;
 }
 
 .item-container {
   width: 80%;
+  margin: 8px auto 8px auto;
   display: grid;
       grid-gap: 10px;
       grid-template-columns: 1fr;
@@ -86,6 +99,11 @@ p {
   color: #ccc;  */
 }
 
+#timeLeft {
+  margin: 8px 15%;
+  font-size: 24px;
+}
+
 .startGame {
   width: 20%;
   display: inline-block;
@@ -102,13 +120,13 @@ p {
 
 #Qtile {
   text-transform: uppercase;
-  font-size: 50px;
-  font-weight: bold;
+  font-size: 30px;
+  /* font-weight: bold; */
   width: 75%;
   display: inline-block;
   vertical-align: top;
   margin: 5px 10%;
-  padding: 20px;
+  padding: 20px;;
   position: relative;
 }
 
@@ -141,10 +159,10 @@ p {
   background-color: red;
 }
 
-.result {
+/* .result {
   margin: 5px 20px;
-  font-size: 25px;
-  font-weight: bold;
-}
+  font-size: 25px; */
+  /* font-weight: bold; */
+/* } */
 
 /* END OF FILE */

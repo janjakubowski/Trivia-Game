@@ -221,13 +221,15 @@ $(document).on("click", ".startGame", function () {
             // $(this).addClass("picked");
             QtextArea = $("#Qtile");
             var correctA = currentQ.QcorrectAnswer;
-            QtextArea.prepend(`<h2 class="result">The correct answer is ${correctA}</h2>`);       
+            QtextArea.prepend(`<p>The correct answer is ${correctA}</p>`);       
             if ($(this).attr("data-right") === "Y") {
-                var rightOrWrong = `<h2 class="result">Yes, you're right!</h2>`
+                // var rightOrWrong = `<h2 class="result">Yes, you're right!</h2>`
+                var rightOrWrong = `<p>Yes, you're right!</p>`
+
                 $(this).addClass("pickedRight");
                 numCorrect++;
             } else {
-                var rightOrWrong = `<h2 class="result">Sorry, you're wrong!</h2>`;
+                var rightOrWrong = `<p>Sorry, you're wrong!</p>`;
                 $(this).addClass("pickedWrong");
                 numWrong++;
             }
